@@ -39,7 +39,7 @@ local retryBtn = Instance.new("TextButton", f)
 retryBtn.Size = UDim2.new(0.5, 0, 0.1, 0)
 retryBtn.Position = UDim2.new(0.25, 0, 0.36, 0)
 retryBtn.BackgroundColor3 = Color3.fromRGB(50, 120, 250)
-retryBtn.Text = "🔁 Retry"
+retryBtn.Text = "\ud83d\udd01 Retry"
 retryBtn.TextScaled = true
 retryBtn.TextColor3 = Color3.new(1, 1, 1)
 retryBtn.Font = Enum.Font.GothamBold
@@ -54,14 +54,14 @@ t.BackgroundTransparency = 1
 t.TextColor3 = Color3.fromRGB(255, 255, 255)
 t.Font = Enum.Font.GothamSemibold
 t.TextScaled = true
-t.Text = "🔄 Loading Script"
+t.Text = "\ud83d\udd04 Loading Script"
 
 -- Animated Dots
 local a = true
 task.spawn(function()
 	local d = 0
 	while a and t.Parent do
-		t.Text = "🔄 Loading Script" .. string.rep(".", d % 4)
+		t.Text = "\ud83d\udd04 Loading Script" .. string.rep(".", d % 4)
 		d += 1
 		wait(0.5)
 	end
@@ -80,6 +80,26 @@ bar.Size = UDim2.new(0, 0, 1, 0)
 bar.BackgroundColor3 = Color3.fromRGB(0, 255, 140)
 Instance.new("UICorner", bar).CornerRadius = UDim.new(0, 14)
 
+-- Glow Effect
+local glow = Instance.new("UIStroke", bar)
+glow.Thickness = 1
+glow.Color = Color3.fromRGB(0, 255, 140)
+glow.Transparency = 0.3
+
+-- Pulse Animation
+task.spawn(function()
+	while a and bar.Parent do
+		for t = 0.3, 0.6, 0.05 do
+			glow.Transparency = t
+			wait(0.05)
+		end
+		for t = 0.6, 0.3, -0.05 do
+			glow.Transparency = t
+			wait(0.05)
+		end
+	end
+end)
+
 -- Percentage Text
 local perc = Instance.new("TextLabel", pb)
 perc.Size = UDim2.new(1, 0, 1, 0)
@@ -97,7 +117,7 @@ i.BackgroundTransparency = 1
 i.Font = Enum.Font.GothamSemibold
 i.TextColor3 = Color3.fromRGB(200, 200, 200)
 i.TextScaled = true
-i.Text = "⏳ Please wait, script is initializing..."
+i.Text = "\u23f3 Please wait, script is initializing..."
 
 -- Rejoin Tip
 local hint = Instance.new("TextLabel", f)
@@ -107,7 +127,7 @@ hint.BackgroundTransparency = 1
 hint.Font = Enum.Font.GothamSemibold
 hint.TextColor3 = Color3.fromRGB(180, 180, 180)
 hint.TextScaled = true
-hint.Text = "⚠️ IF U STUCK TRY TO REJOIN"
+hint.Text = "\u26a0\ufe0f IF U STUCK TRY TO REJOIN"
 
 -- Footer Credit
 local credit = Instance.new("TextLabel", f)
@@ -117,7 +137,7 @@ credit.BackgroundTransparency = 1
 credit.Font = Enum.Font.GothamSemibold
 credit.TextColor3 = Color3.fromRGB(170, 170, 170)
 credit.TextScaled = true
-credit.Text = "📜 Script made by @growyourowngarden on TikTok"
+credit.Text = "\ud83d\udcdc Script made by @growyourowngarden on TikTok"
 
 -- Progress Function
 local continueTo100 = false
@@ -141,7 +161,11 @@ local function fillProgress()
 			end)
 		end
 
-		wait(1.8)
+		if i <= 70 then
+			wait(0.05) -- Fast loading from 1-70%
+		else
+			wait(1.8) -- Slow loading from 71-100%
+		end
 	end
 
 	a = false
